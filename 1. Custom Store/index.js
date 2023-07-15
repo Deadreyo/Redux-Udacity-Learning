@@ -113,7 +113,7 @@ const AddGoal = (goal) => (
     }
 )
 
-function RemoveGoal(id) { // action creator
+function RemoveGoalAction(id) { // action creator
     return {
         type: REMOVE_GOAL,
         id
@@ -130,4 +130,4 @@ store.dispatch(AddGoal({
     name: "Major Goal",
     id: 1
 }))
-store.dispatch(RemoveGoal(1))
+store.dispatch(RemoveGoalAction(1))
