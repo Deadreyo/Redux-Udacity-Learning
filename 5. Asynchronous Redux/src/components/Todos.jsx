@@ -1,27 +1,20 @@
 import { useRef } from "react";
 import List from "./List";
-import { AddGoalAction, AddTodoAction, RemoveTodoAction, ToggleTodoAction } from "../store/store";
+import { handleAddTodo, handleRemoveTodo, handleToggleTodo } from "../store/store";
 
 export default function Todos({ store, todos }) {
     const inputRef = useRef();
 
-    const handleAddTodo = () => {
-        const name = inputRef.current.value;
-        inputRef.current.value = "";
-
-        store.dispatch(AddTodoAction({
-            name,
-            id: crypto.randomUUID(),
-            completed: false,
-        }))
+    const addTodo = () => {
+        store.dispatch(handleAddTodo(inputRef.current.value, () => inputRef.current.value = ""))
     }
 
     const onToggle = (id) => {
-        store.dispatch(ToggleTodoAction(id))
+        store.dispatch(handleToggleTodo(id))
     }
 
-    const onDelete = (id) => {
-        store.dispatch(RemoveTodoAction(id))
+    const onDelete = (todo) => {
+        store.dispatch(handleRemoveTodo(todo))
     }
 
     return (
@@ -32,7 +25,7 @@ export default function Todos({ store, todos }) {
                 placeholder="Add Todo"
                 ref={inputRef}
             />
-            <button onClick={handleAddTodo}>Add Todo</button>
+            <button onClick={addTodo}>Add Todo</button>
             <List items={todos} onToggle={onToggle} onDelete={onDelete}/>
         </div>
     )

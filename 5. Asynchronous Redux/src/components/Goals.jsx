@@ -1,22 +1,16 @@
 import { useRef } from "react";
 import List from "./List";
-import { AddGoalAction, RemoveGoalAction } from "../store/store";
+import { handleAddGoal, handleRemoveGoal } from "../store/store";
 
 export default function Goals({ store, goals }) {
     const inputRef = useRef();
 
-    const handleAddGoal = () => {
-        const name = inputRef.current.value;
-        inputRef.current.value = "";
-
-        store.dispatch(AddGoalAction({
-            name,
-            id: crypto.randomUUID(),
-        }))
+    const addGoal = () => {
+        store.dispatch(handleAddGoal(inputRef.current.value, () => inputRef.current.value = ""));
     }
 
-    const onDelete = (id) => {
-        store.dispatch(RemoveGoalAction(id))
+    const onDelete = (goal) => {
+        store.dispatch(handleRemoveGoal(goal))    
     }
 
     return (
@@ -27,7 +21,7 @@ export default function Goals({ store, goals }) {
                 placeholder="Add Goal"
                 ref={inputRef}
             />
-            <button onClick={handleAddGoal}>Add Goal</button>
+            <button onClick={addGoal}>Add Goal</button>
             <List items={goals} onDelete={onDelete}/>
         </div>
     )
